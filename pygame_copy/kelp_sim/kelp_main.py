@@ -85,8 +85,8 @@ def display_arm_from_points(A_coord,A_angle,B_angle,C_angle,segment_length, surf
     pygame_obj.draw.line(surface, seg_color, C_coord, D_coord, arm_segment_thickness)
 
 def main():
-    screen_dim_x = 500
-    screen_dim_y = 500
+    screen_dim_x = 1000 #<--X--->
+    screen_dim_y = 500 #up --y--  down  
     pygame.init()
     screen = pygame.display.set_mode((screen_dim_x, screen_dim_y)) # creates display window
     screen.fill((255, 255, 255)) #fills window with white
@@ -130,7 +130,9 @@ def main():
 
     display_arm_from_points(A_start,A_angle,B_angle,C_angle,arm_length,screen,pygame,"black")
 
-    kelpA = kelp(4,4,(45,45),"giant")
+    kelpA = kelp(300,(45,45),"giant")
+
+
 
 
     pygame.display.flip()
@@ -146,14 +148,17 @@ def main():
 
 
 
-
+            '''
             angles = control_arm(A_angle,B_angle,C_angle,pygame,0.1)
             A_angle = angles[0]
             B_angle = angles[1]
             C_angle = angles[2]
             display_arm_from_points(A_start,A_angle,B_angle,C_angle,arm_length,screen,pygame,(10,235,10))
             #display_arm_from_points(kelp_A_A_start,kelp_A_A_angle,kelp_A_B_angle,kelp_A_C_angle,kelp_A_A_seg_length,screen,pygame,kelp_color)
-            pygame.display.flip()
+            
+            '''  
+        pygame.display.flip()
+
     finally:
         pygame.quit()
 
