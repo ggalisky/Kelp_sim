@@ -1,4 +1,4 @@
-04/11/2023
+11/04/2023
 
 Place to store my thoughts as I work on the project. 
 
@@ -22,6 +22,9 @@ What features do I want to implement?
 - smaller kelp plants
 - fish
 - dynamically casted shadows
+- dynamic weather events
+
+- control of lobster player character
 
 Great, now that I have a list of features I have no idea how to implement, its time to select a start task. 
 
@@ -31,3 +34,18 @@ I figured out map loading for black and white bitmaps in a previous project, now
 
 ---
 Kelp strands will be animated based off of a set of points. The number of these points and their distance from each other is derived from the initial length of the kelp. The segments become smaller as the kelp reaches its tip. Each segment joint to the next segment will have an angle associated with it that defines its position relative to the last segment. Each joint will also have a "spring weight" to it that defines how much it tries to restore itself to a default position when an outside force interacts with it.
+
+11/05/2023
+
+After doing some googling I've figured out that I need to use inverse kinematics for the kelp.
+
+basically I want to derive the location of the joints based on the location of the final joint. The final joints location will be determined by the anchor point and the water level. If the water level exceeds the max vertical length of the kep, it stands up straight, if its below, the kep either sags to the left or right. 
+
+How the heck am I supposed to add water flow? 
+
+
+https://www.youtube.com/watch?v=hbgDqyy8bIw
+
+https://www.youtube.com/watch?v=hbgDqyy8bIw
+
+guess I need to learn about forward and inverse kinematics again (took a course on this during college for robot arm control)
