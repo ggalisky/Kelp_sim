@@ -84,6 +84,20 @@ def display_arm_from_points(A_coord,A_angle,B_angle,C_angle,segment_length, surf
     pygame_obj.draw.circle(surface, seg_color, D_coord, joint_circle_d)
     pygame_obj.draw.line(surface, seg_color, C_coord, D_coord, arm_segment_thickness)
 
+def render_kelp(kelpobjs, surface, pygame_obj, color):
+    #renders kelp give a list of coords and joint angles
+
+    #clear the screen
+    surface.fill((255, 255, 255)) #fills window with white
+
+    arm_segment_thickness = 5
+    joint_circle_d = 2
+    for kelp in kelpobjs:
+        for coord in kelp.joint_coords:
+            pygame_obj.draw.circle(surface, "black", coord, joint_circle_d)
+
+
+
 def main():
     screen_dim_x = 1000 #<--X--->
     screen_dim_y = 500 #up --y--  down  
@@ -130,7 +144,21 @@ def main():
 
     display_arm_from_points(A_start,A_angle,B_angle,C_angle,arm_length,screen,pygame,"black")
 
-    kelpA = kelp(300,(45,45),"giant")
+
+    kelpA = kelp(400,(45,450),"giant")
+    kelpB = kelp(200,(80,450),"giant")
+    kelpC = kelp(456,(60,450),"giant")
+    kelpD = kelp(213,(100,450),"giant")
+    kelpE = kelp(378,(150,450),"giant")
+    kelpF = kelp(124,(178,450),"giant")
+    kelpG = kelp(445,(234,450),"giant")
+    kelpH = kelp(456,(255,450),"giant")
+    kelpI = kelp(342,(400,450),"giant")
+    kelpJ = kelp(300,(670,450),"giant")
+    
+    kelp_forest = (kelpA,kelpB,kelpC,kelpD,kelpE,kelpF,kelpG,kelpH,kelpI,kelpJ)
+
+
 
 
 
@@ -146,8 +174,10 @@ def main():
                 if event.type == pygame.QUIT:
                     return
 
+            
+            render_kelp(kelp_forest,screen,pygame,"green")
 
-
+            pygame.display.flip()
             '''
             angles = control_arm(A_angle,B_angle,C_angle,pygame,0.1)
             A_angle = angles[0]
@@ -157,7 +187,7 @@ def main():
             #display_arm_from_points(kelp_A_A_start,kelp_A_A_angle,kelp_A_B_angle,kelp_A_C_angle,kelp_A_A_seg_length,screen,pygame,kelp_color)
             
             '''  
-        pygame.display.flip()
+        
 
     finally:
         pygame.quit()

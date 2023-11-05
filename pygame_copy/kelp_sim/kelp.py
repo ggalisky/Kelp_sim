@@ -28,15 +28,16 @@ class kelp:
         default_joint_angle = 3.14
         self.joint_coords.append(anchor)
         self.joint_angles.append(default_joint_angle)
-        section_A_default_segment_length = 15
-        section_B_default_segment_length = 12
-        section_C_default_segment_length = 6
-        section_C_decrement = 2
+        section_A_default_segment_length = 20
+        section_B_default_segment_length = 15
+        section_C_default_segment_length = 15
+        section_C_decrement = 1
+        section_C_decrement_extra = .3
 
         section_A_length = int(length/2)
         section_B_length = int(length/4)
         section_C_length = int(length/4)
-        print("sectionAL: ", section_A_length,"sectionBL: ", section_B_length, "sectionCL: ", section_C_length)
+        #print("sectionAL: ", section_A_length,"sectionBL: ", section_B_length, "sectionCL: ", section_C_length)
 
         num_A_segments = int(section_A_length/section_A_default_segment_length)
         num_B_segments = int(section_B_length/section_B_default_segment_length)
@@ -45,34 +46,30 @@ class kelp:
         
 
         x_coord = anchor[0]
+        y_coord = anchor[1]
         #generate joint coords and angles for A section
 
         print("A segments: ", num_A_segments, "b seg: ", num_B_segments, "Cseg: ", num_C_segments)
-        for x in range(num_A_segments):
-            self.joint_coords.append( (x_coord,(x*section_A_default_segment_length)) )
+        for x in range(1,num_A_segments):
+            self.joint_coords.append( (x_coord,y_coord - (x*section_A_default_segment_length) ) )
             self.joint_angles.append(default_joint_angle)
 
-       
+        b_start = self.joint_coords[len(self.joint_angles)-1][1]
+
+        #print("b_start: " , b_start)
+
         for x in range(0,num_B_segments):
-            self.joint_coords.append( (x_coord,(x*section_B_default_segment_length)) )
+            self.joint_coords.append( (x_coord, b_start - (x*section_B_default_segment_length)) )
             self.joint_angles.append(default_joint_angle)
 
-
-       
+        c_start = self.joint_coords[len(self.joint_angles)-1][1]
         for x in range(0,num_C_segments):
-            self.joint_coords.append( (x_coord,(x*section_C_default_segment_length - (x *section_C_decrement))))
+            self.joint_coords.append( (x_coord,+ c_start - (x*section_C_default_segment_length - (x *section_C_decrement))))
             self.joint_angles.append(default_joint_angle)
-
-        for coord in self.joint_coords:
-            print(coord)
-
-    def generate_init_joints(self, length, anchor_coord):
-        self.joint_coords[0] = anchor_coord
-        pass
+            section_C_decrement += section_C_decrement_extra
 
         
-
-
-
-    def init_num_points(num_segments):
-        pass
+        for x in range(len(self.joint_coords)):
+            print("coords: ", str(self.joint_coords[x]), " angles: ", str(self.joint_angles[x]))
+        print ("len coords: ", len(self.joint_coords), " len angles: ", len(self.joint_angles))
+        
