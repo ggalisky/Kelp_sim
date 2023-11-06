@@ -1,6 +1,10 @@
 import math
 
+### constants
+kelp_green = (167,230,70)
 
+
+###
 class kelp_segment:
 
     def __init__(self,start_angle,length, surface, pygameobj,parent=None,start_point=None,  angle_recovery_delay =1,joint_stiffness = 1,angle_overshoot = 0):
@@ -32,7 +36,6 @@ class kelp_segment:
                    |
                  1.5 pi
         '''
-
 
     def calculate_end_point(self):
         dx = self.length * math.cos(self.angle) + self.start_point[0]
@@ -75,4 +78,55 @@ class kelp_segment:
         
 
 
+class kelp:
+    
+    def __init__(self,length,num_segments,anchor_coord, screen, pygame_obj):
+
+        self.length = length
+        self.anchor_coord = anchor_coord
+        self.num_segments = num_segments
+        self.segments = []
+        print("made it")
+        self.segments_lengths = self.generate_segments_lengths(self.length, self.num_segments)
+        self.screen = screen
+        self.pygame_obj = pygame_obj
+
+        self.generate_segments()
+
+    def generate_segments_lengths(self, length, num_segments):
+        segment_length_list =[]
+
+        for x in range(num_segments):
+            print("length: " , length)
+            segment_length_list.append(length)
         
+
+        return segment_length_list
+
+
+
+
+
+    def generate_segments(self):
+
+        self.segments.append(kelp_segment((math.pi*.5),
+            self.segments_lengths[0],self.screen,self.pygame_obj,None,self.anchor_coord,1,.01))
+        print("len: ", len(self.segments_lengths))
+        for x in range(0, int(len(self.segments_lengths))):
+            print("len of self.segments: ", str(len(self.segments)))
+            self.segments.append(kelp_segment((math.pi*.5),
+            self.segments_lengths[x],self.screen,self.pygame_obj,self.segments[x],None,1,.02))
+
+    def render_segments(self, mouse_coords):
+        
+        for segment in self.segments:
+            segment.draw_segment(kelp_green, 5)
+            segment.seg_follow_mouse(mouse_coords)
+
+        
+
+
+
+
+        
+

@@ -1,7 +1,9 @@
 import pygame
 import math
-from kelp import kelp
+
+from segment import kelp
 from segment import kelp_segment
+
 #from kelp.py import kelp
 
 #####
@@ -125,111 +127,48 @@ def main():
     B_angle = A_angle
     C_angle = A_angle
 
-    kelp_color = "green"
-    kelp_A_A_seg_length = 80
-    kelp_A_A_start = (20,450)
-    kelp_A_A_angle = 200
-    kelp_A_B_angle = 200
-    kelp_A_C_angle = 200
-
-    display_arm_from_points(kelp_A_A_start,kelp_A_A_angle,kelp_A_B_angle,kelp_A_C_angle,kelp_A_A_seg_length,screen,pygame,kelp_color)
-
- 
-
-    joint_stiffness = [
-    0.011,
-    0.012,
-    0.013,
-    0.014,
-    0.015,
-    0.016,
-    0.017,
-    0.018,
-    0.019,
-    0.02]
 
 
-        
-    kelp_A_seg1 = kelp_segment((math.pi*.5),20,screen,pygame,None,[500,400],1,.01)
-    kelp_A_seg2 = kelp_segment((math.pi*.5),20,screen,pygame,kelp_A_seg1,None,1,joint_stiffness[0])
-    kelp_A_seg3 = kelp_segment((math.pi*.5),20,screen,pygame,kelp_A_seg2,None,1,joint_stiffness[1])
-    kelp_A_seg4 = kelp_segment((math.pi*.5),20,screen,pygame,kelp_A_seg3,None,1,joint_stiffness[2])
-    kelp_A_seg5 = kelp_segment((math.pi*.5),20,screen,pygame,kelp_A_seg4,None,1,joint_stiffness[3])
-    kelp_A_seg6 = kelp_segment((math.pi*.5),20,screen,pygame,kelp_A_seg5,None,1,joint_stiffness[4])
-    kelp_A_seg7 = kelp_segment((math.pi*.5),20,screen,pygame,kelp_A_seg6,None,1,joint_stiffness[5])
-    kelp_A_seg8 = kelp_segment((math.pi*.5),20,screen,pygame,kelp_A_seg7,None,1,joint_stiffness[6])
-    kelp_A_seg9 = kelp_segment((math.pi*.5),20,screen,pygame,kelp_A_seg8,None,1,joint_stiffness[7],(math.pi * 0.2))
-    kelp_A_seg10 = kelp_segment((math.pi*.5),20,screen,pygame,kelp_A_seg9,None,1,joint_stiffness[8],(math.pi * 0.2))
-    kelp_A_seg11 = kelp_segment((math.pi*.5),20,screen,pygame,kelp_A_seg10,None,1,joint_stiffness[9],(math.pi * 0.2))
-    kelp_A = [
-        kelp_A_seg1,
-        kelp_A_seg2,
-        kelp_A_seg3,
-        kelp_A_seg4,
-        kelp_A_seg5,
-        kelp_A_seg6,
-        kelp_A_seg7,
-        kelp_A_seg8,
-        kelp_A_seg9,
-        kelp_A_seg10,
-        kelp_A_seg11
-    ]
-    kelp_B_length = 16
 
-    kelp_B_seg1 = kelp_segment((math.pi*.5),kelp_B_length,screen,pygame,None,[550,400],1,.01)
-    kelp_B_seg2 = kelp_segment((math.pi*.5),kelp_B_length,screen,pygame,kelp_B_seg1,None,1,joint_stiffness[0])
-    kelp_B_seg3 = kelp_segment((math.pi*.5),kelp_B_length,screen,pygame,kelp_B_seg2,None,1,joint_stiffness[1])
-    kelp_B_seg4 = kelp_segment((math.pi*.5),kelp_B_length,screen,pygame,kelp_B_seg3,None,1,joint_stiffness[2])
-    kelp_B_seg5 = kelp_segment((math.pi*.5),kelp_B_length,screen,pygame,kelp_B_seg4,None,1,joint_stiffness[3])
-    kelp_B_seg6 = kelp_segment((math.pi*.5),kelp_B_length,screen,pygame,kelp_B_seg5,None,1,joint_stiffness[4])
-    kelp_B_seg7 = kelp_segment((math.pi*.5),kelp_B_length,screen,pygame,kelp_B_seg6,None,1,joint_stiffness[5])
-    kelp_B_seg8 = kelp_segment((math.pi*.5),kelp_B_length,screen,pygame,kelp_B_seg7,None,1,joint_stiffness[6])
-    kelp_B_seg9 = kelp_segment((math.pi*.5),kelp_B_length,screen,pygame,kelp_B_seg8,None,1,joint_stiffness[7],(math.pi * 0.2))
-    kelp_B_seg10 = kelp_segment((math.pi*.5),kelp_B_length,screen,pygame,kelp_B_seg9,None,1,joint_stiffness[8],(math.pi * 0.2))
-    kelp_B_seg11 = kelp_segment((math.pi*.5),kelp_B_length,screen,pygame,kelp_B_seg10,None,1,joint_stiffness[9],(math.pi * 0.2))
-    kelp_B = [
-        kelp_B_seg1,
-        kelp_B_seg2,
-        kelp_B_seg3,
-        kelp_B_seg4,
-        kelp_B_seg5,
-        kelp_B_seg6,
-        kelp_B_seg7,
-        kelp_B_seg8,
-        kelp_B_seg9,
-        kelp_B_seg10,
-        kelp_B_seg11
-    ]
 
-    kelp_C_length = 22
-
-    kelp_C_seg1 = kelp_segment((math.pi*.5),kelp_C_length,screen,pygame,None,[430,400],1,.01)
-    kelp_C_seg2 = kelp_segment((math.pi*.5),kelp_C_length,screen,pygame,kelp_C_seg1,None,1,joint_stiffness[0])
-    kelp_C_seg3 = kelp_segment((math.pi*.5),kelp_C_length,screen,pygame,kelp_C_seg2,None,1,joint_stiffness[1])
-    kelp_C_seg4 = kelp_segment((math.pi*.5),kelp_C_length,screen,pygame,kelp_C_seg3,None,1,joint_stiffness[2])
-    kelp_C_seg5 = kelp_segment((math.pi*.5),kelp_C_length,screen,pygame,kelp_C_seg4,None,1,joint_stiffness[3])
-    kelp_C_seg6 = kelp_segment((math.pi*.5),kelp_C_length,screen,pygame,kelp_C_seg5,None,1,joint_stiffness[4])
-    kelp_C_seg7 = kelp_segment((math.pi*.5),kelp_C_length,screen,pygame,kelp_C_seg6,None,1,joint_stiffness[5])
-    kelp_C_seg8 = kelp_segment((math.pi*.5),kelp_C_length,screen,pygame,kelp_C_seg7,None,1,joint_stiffness[6])
-    kelp_C_seg9 = kelp_segment((math.pi*.5),kelp_C_length,screen,pygame,kelp_C_seg8,None,1,joint_stiffness[7],(math.pi * 0.2))
-    kelp_C_seg10 = kelp_segment((math.pi*.5),kelp_C_length,screen,pygame,kelp_C_seg9,None,1,joint_stiffness[8],(math.pi * 0.2))
-    kelp_C_seg11 = kelp_segment((math.pi*.5),kelp_C_length,screen,pygame,kelp_C_seg10,None,1,joint_stiffness[9],(math.pi * 0.2))
-    kelp_C = [
-        kelp_C_seg1,
-        kelp_C_seg2,
-        kelp_C_seg3,
-        kelp_C_seg4,
-        kelp_C_seg5,
-        kelp_C_seg6,
-        kelp_C_seg7,
-        kelp_C_seg8,
-        kelp_C_seg9,
-        kelp_C_seg10,
-        kelp_C_seg11
-    ]
-
-    display_arm_from_points(A_start,A_angle,B_angle,C_angle,arm_length,screen,pygame,"black")
+   
     pygame.display.flip()
+
+    kelp_new_A = kelp(22,10,[100,450],screen,pygame)
+    kelp_new_B = kelp(22,10,[234,450],screen,pygame)
+    kelp_new_C = kelp(22,10,[356,450],screen,pygame)
+    kelp_new_D = kelp(22,10,[500,450],screen,pygame)
+    kelp_new_E = kelp(22,10,[600,450],screen,pygame)
+    kelp_new_F = kelp(22,10,[800,450],screen,pygame)
+    kelp_new_G = kelp(22,10,[900,450],screen,pygame)
+    kelp_new_H = kelp(22,10,[910,450],screen,pygame)
+    kelp_new_I = kelp(22,10,[890,450],screen,pygame)
+    kelp_new_J = kelp(22,10,[880,450],screen,pygame)
+    kelp_new_K = kelp(22,10,[875,450],screen,pygame)
+    kelp_new_L = kelp(22,10,[915,450],screen,pygame)
+    kelp_new_M = kelp(22,10,[920,450],screen,pygame)
+    kelp_new_N = kelp(22,10,[935,450],screen,pygame)
+
+    kelp_forest = [
+        kelp_new_A,
+        kelp_new_B,
+        kelp_new_C,
+        kelp_new_D,
+        kelp_new_E,
+        kelp_new_F,
+        kelp_new_H,
+        kelp_new_I,
+        kelp_new_J,
+        kelp_new_K,
+        kelp_new_L,
+        kelp_new_M,
+        kelp_new_N,
+
+
+
+    ]
+
+
 
     #game loop
 
@@ -245,15 +184,11 @@ def main():
             clear_screen(screen)
             mouse_coords = pygame.mouse.get_pos()
 
-            for segment in kelp_A:
-                segment.draw_segment(kelp_green, 8)
-                segment.seg_follow_mouse(mouse_coords)
-            for segment in kelp_B:
-                segment.draw_segment(kelp_green, 8)
-                segment.seg_follow_mouse(mouse_coords)
-            for segment in kelp_C:
-                segment.draw_segment(kelp_green, 8)
-                segment.seg_follow_mouse(mouse_coords)
+
+            #kelp_new_A.render_segments(mouse_coords)
+
+            for kelp_strand in kelp_forest:
+                kelp_strand.render_segments(mouse_coords)
 
 
             pygame.display.flip()
