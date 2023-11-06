@@ -6,99 +6,6 @@ from segment import kelp_segment
 
 #from kelp.py import kelp
 
-#####
-kelp_green = (167,230,70)
-
-####
-
-def restore_angle(angle,restore_amt):
-    if angle > 0:
-        new_angle = angle - restore_amt
-        return new_angle
-    elif angle == 0:
-        return angle
-    else:
-        new_angle = angle + restore_amt
-        return new_angle
-
-def control_arm(A_angle,B_angle,C_angle,pygameobj,movement_distance):
-
-    restore_amt = 0.01
-    updated_A_angle = A_angle
-    updated_B_angle = B_angle
-    updated_C_angle = C_angle
-    keys = pygameobj.key.get_pressed()
-
-    if keys[pygameobj.K_a]:
-        updated_A_angle += movement_distance
-        return(updated_A_angle,updated_B_angle,updated_C_angle)
-
-    elif keys[pygameobj.K_s]:
-        updated_B_angle += movement_distance
-        return(updated_A_angle,updated_B_angle,updated_C_angle)
-
-    elif keys[pygameobj.K_d]:
-        updated_C_angle += movement_distance
-        return(updated_A_angle,updated_B_angle,updated_C_angle)
-
-    elif keys[pygameobj.K_q]:
-        updated_A_angle -= movement_distance
-        return(updated_A_angle,updated_B_angle,updated_C_angle)
-
-    elif keys[pygameobj.K_w]:
-        updated_B_angle -= movement_distance
-        return(updated_A_angle,updated_B_angle,updated_C_angle)
-
-    elif keys[pygameobj.K_e]:
-        updated_C_angle -= movement_distance
-        return(updated_A_angle,updated_B_angle,updated_C_angle)
-
-    else:
-        print("tick"+ str(updated_A_angle))
-        updated_A_angle = restore_angle(updated_A_angle,restore_amt)
-        updated_B_angle = restore_angle(updated_B_angle,restore_amt)
-        updated_C_angle = restore_angle(updated_C_angle,restore_amt)
-        return(updated_A_angle,updated_B_angle,updated_C_angle)
-
-    return(updated_A_angle,updated_B_angle,updated_C_angle)
-
-def calculate_B_coord(segment_length, angle, start_coords):
-    return (segment_length*math.cos(angle)+start_coords[0],segment_length*math.sin(angle)+start_coords[1])
-
-def display_arm_from_points(A_coord,A_angle,B_angle,C_angle,segment_length, surface, pygame_obj, seg_color):
-    surface.fill((255, 255, 255)) #fills window with white
-    arm_segment_thickness = 5
-    joint_circle_d = 7
-    #draw red pivot
-    pygame_obj.draw.circle(surface, "red", (250, 250), 15)
-
-    #draw arm segment 1
-    #calculate Bcoord
-    B_coord = calculate_B_coord(segment_length,A_angle,A_coord)
-    pygame_obj.draw.circle(surface, seg_color, A_coord, joint_circle_d)
-    pygame_obj.draw.line(surface, seg_color, A_coord, B_coord, arm_segment_thickness)
-    #draw arm segment 2
-    C_coord = calculate_B_coord(segment_length,B_angle,B_coord)
-    pygame_obj.draw.circle(surface, seg_color, B_coord, joint_circle_d)
-    pygame_obj.draw.line(surface, seg_color, B_coord, C_coord, arm_segment_thickness)
-    #draw arm segment 3
-    D_coord = calculate_B_coord(segment_length,C_angle,C_coord)
-    pygame_obj.draw.circle(surface, seg_color, C_coord, joint_circle_d)
-    pygame_obj.draw.circle(surface, seg_color, D_coord, joint_circle_d)
-    pygame_obj.draw.line(surface, seg_color, C_coord, D_coord, arm_segment_thickness)
-
-def render_kelp(kelpobjs, surface, pygame_obj, color):
-    #renders kelp give a list of coords and joint angles
-
-    #clear the screen
-    surface.fill((255, 255, 255)) #fills window with white
-
-    arm_segment_thickness = 5
-    joint_circle_d = 2
-    for kelp in kelpobjs:
-        for coord in kelp.joint_coords:
-            pygame_obj.draw.circle(surface, "black", coord, joint_circle_d)
-
 def clear_screen(surface):
     surface.fill((255, 255, 255)) #fills window with white
 
@@ -120,21 +27,14 @@ def main():
     # start playing
     #print("Playing Sound...")
     #channel = sound.play()
-    arm_length = 80
-    middle_of_screen = (screen_dim_x/2,screen_dim_y/2)
-    A_start = middle_of_screen
-    A_angle = 90
-    B_angle = A_angle
-    C_angle = A_angle
-
-
-
-
-
-   
+  
+  
     pygame.display.flip()
 
-    kelp_new_A = kelp(22,10,[100,450],screen,pygame)
+    kelp_new_A = kelp(5,40,[500,450],screen,pygame)
+
+    kelp_new_B = kelp(80,1,[500,450],screen,pygame)
+    '''
     kelp_new_B = kelp(22,10,[234,450],screen,pygame)
     kelp_new_C = kelp(22,10,[356,450],screen,pygame)
     kelp_new_D = kelp(22,10,[500,450],screen,pygame)
@@ -163,46 +63,53 @@ def main():
         kelp_new_L,
         kelp_new_M,
         kelp_new_N,
-
-
-
     ]
+    '''
 
-
-
-    #game loop
-
-
+    kelp_seg_test_pi = kelp_segment((math.pi),40,screen,pygame,None,[300,300],1,1)
+    kelp_seg_test_2pi = kelp_segment((math.pi*2),40,screen,pygame,None,[300,300],1,1)
+    kelp_seg_test_halfpi = kelp_segment((math.pi*.5),40,screen,pygame,None,[300,300],1,1)
+    kelp_seg_test_zero = kelp_segment((0),40,screen,pygame,None,[300,300],1,1)
+    kelp_seg_test_15pi = kelp_segment((math.pi*(1.5)),40,screen,pygame,None,[300,300],1,1)
+    counter = 0
     try: #game loop
         while True:
+  
+            keys = pygame.key.get_pressed()
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return
+                if keys[pygame.K_p]:
+                    while keys[pygame.K_p]:
+                        for event in pygame.event.get():
+                            keys = pygame.key.get_pressed()
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                quit()
+                        #if keys[pygame.K_p]:
+                            
 
-            
-            
+
+
+
             clear_screen(screen)
             mouse_coords = pygame.mouse.get_pos()
 
+            #for kelp_strand in kelp_forest:
+            kelp_new_A.render_segments(mouse_coords)
 
-            #kelp_new_A.render_segments(mouse_coords)
+            #kelp_new_B.render_segments(mouse_coords)
 
-            for kelp_strand in kelp_forest:
-                kelp_strand.render_segments(mouse_coords)
+            kelp_seg_test_pi.draw_segment("red",8)
+            kelp_seg_test_pi.seg_follow_mouse(mouse_coords)
 
-
-            pygame.display.flip()
-            '''
-            angles = control_arm(A_angle,B_angle,C_angle,pygame,0.1)
-            A_angle = angles[0]
-            B_angle = angles[1]
-            C_angle = angles[2]
-            display_arm_from_points(A_start,A_angle,B_angle,C_angle,arm_length,screen,pygame,(10,235,10))
-            #display_arm_from_points(kelp_A_A_start,kelp_A_A_angle,kelp_A_B_angle,kelp_A_C_angle,kelp_A_A_seg_length,screen,pygame,kelp_color)
             
-            '''  
-        
+ 
 
+                
+            pygame.display.flip()
+  
     finally:
         pygame.quit()
 

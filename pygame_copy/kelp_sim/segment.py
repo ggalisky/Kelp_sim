@@ -43,6 +43,8 @@ class kelp_segment:
         return [dx,dy]
 
     def draw_segment(self,color,thickness):
+        if self.parent:
+            print("self.angle = ", self.angle)
         self.pg.draw.line(self.surface, color, self.start_point, self.end_point, thickness)
         self.pg.draw.circle(self.surface, color, self.start_point, thickness/2)
         self.pg.draw.circle(self.surface, color, self.end_point, thickness/2)
@@ -52,22 +54,51 @@ class kelp_segment:
         if self.parent:
             self.start_point[0] = self.parent.end_point[0]
             self.start_point[1] = self.parent.end_point[1]
+            #print("has parent")
         # figure out location of mouse relative to first start_point
         #print("following..")
-
+        
         dx = mouse_coords[0] - self.start_point[0]
         dy = mouse_coords[1] - self.start_point[1]
+        #print("dx:", dx, "dy: ", dy)
+
+        mult = 1
+        if dx < self.start_point[0]:
+            mult = -1
 
         new_angle = math.atan2(dy,dx)
+        if self.parent:
+            print("current angle: ", self.angle, "new angle: ", new_angle)
+        
+        #prevents clockwise segment position correction bias
+
+
+
         self.goal_angle = new_angle #- self.angle_overshoot
 
-        #if self.parent:
+        
         delta_angle = self.angle - self.goal_angle
-        #print("self.angle: ", self.angle, "self.goal_angel", self.goal_angle, "delta angle", delta_angle)
+       
+        
         value = self.angle - delta_angle *self.joint_stiffness# (delta_angle * self.angle_recovery_delay)* self.joint_stiffness
         #print("updated angle ", value )
         #self.angle -= (delta_angle/.01)
+
+        
         self.angle = value
+        
+  
+            
+        #flattens out segments as the reach the surface
+        if self.angle > math.pi*.5 and self.angle < math.pi:
+            print("default to neg pi")
+            self.angle = -math.pi
+        elif self.angle > 0 and self.angle < math.pi*.5:
+            self.angle = 0
+            print("default to")
+        
+
+        
         #else:
         #    self.angle = new_angle
 
