@@ -2,6 +2,7 @@ import math
 
 ### constants
 kelp_green = (167,230,70)
+kelp_green_2 = (190,200,154)
 
 
 ###
@@ -44,7 +45,8 @@ class kelp_segment:
 
     def draw_segment(self,color,thickness):
         if self.parent:
-            print("self.angle = ", self.angle)
+            pass
+            #print("self.angle = ", self.angle)
         self.pg.draw.line(self.surface, color, self.start_point, self.end_point, thickness)
         self.pg.draw.circle(self.surface, color, self.start_point, thickness/2)
         self.pg.draw.circle(self.surface, color, self.end_point, thickness/2)
@@ -68,7 +70,8 @@ class kelp_segment:
 
         new_angle = math.atan2(dy,dx)
         if self.parent:
-            print("current angle: ", self.angle, "new angle: ", new_angle)
+            pass
+            #print("current angle: ", self.angle, "new angle: ", new_angle)
         
         #prevents clockwise segment position correction bias
 
@@ -86,16 +89,21 @@ class kelp_segment:
 
         
         self.angle = value
+        #self.angle = new_angle
         
   
             
         #flattens out segments as the reach the surface
+        
         if self.angle > math.pi*.5 and self.angle < math.pi:
-            print("default to neg pi")
+            #print("default to neg pi")
             self.angle = -math.pi
         elif self.angle > 0 and self.angle < math.pi*.5:
             self.angle = 0
-            print("default to")
+            #print("default to zero")
+
+
+        
         
 
         
@@ -140,18 +148,18 @@ class kelp:
 
     def generate_segments(self):
 
-        self.segments.append(kelp_segment((math.pi*.5),
+        self.segments.append(kelp_segment((-math.pi*.5),
             self.segments_lengths[0],self.screen,self.pygame_obj,None,self.anchor_coord,1,.01))
         print("len: ", len(self.segments_lengths))
         for x in range(0, int(len(self.segments_lengths))):
             print("len of self.segments: ", str(len(self.segments)))
-            self.segments.append(kelp_segment((math.pi*.5),
-            self.segments_lengths[x],self.screen,self.pygame_obj,self.segments[x],None,1,.02))
+            self.segments.append(kelp_segment((-math.pi*.5),
+            self.segments_lengths[x],self.screen,self.pygame_obj,self.segments[x],None,1,.012))
 
     def render_segments(self, mouse_coords):
         
         for segment in self.segments:
-            segment.draw_segment(kelp_green, 5)
+            segment.draw_segment(kelp_green_2, 5)
             segment.seg_follow_mouse(mouse_coords)
 
         

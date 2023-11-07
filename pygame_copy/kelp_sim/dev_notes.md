@@ -46,6 +46,8 @@ How the heck am I supposed to add water flow?
 
 https://www.youtube.com/watch?v=hbgDqyy8bIw
 
-https://www.youtube.com/watch?v=hbgDqyy8bIw
+https://www.reddit.com/r/proceduralgeneration/comments/8yz4fv/my_first_successful_attempt_at_procedural/
+
+
 
 guess I need to learn about forward and inverse kinematics again (took a course on this during college for robot arm control)
