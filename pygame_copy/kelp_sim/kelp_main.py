@@ -24,7 +24,7 @@ def draw_sine_wave(surface, offset, frequency, amplitude,overallY):
         if (i == no_pts*(.5)):
             saved_yval = y
         if i > 0:
-            pygame.draw.aaline(surface, (0, 0, 0),  prev_pt, (i, y))
+            pygame.draw.aaline(surface, "blue",  prev_pt, (i, y))
             pygame.draw.line(surface,sky_blue,(i,y),(i,0))
         prev_pt = (i, y)
 
@@ -94,6 +94,9 @@ def main():
 
     lobster_x = 300
     lobster_y = 300
+
+    counter_amp = 0
+    counter_amp_output = 0
     try: #game loop
         while True:
   
@@ -118,12 +121,14 @@ def main():
             clear_screen(screen)
 
             #mouse_coords = pygame.mouse.get_pos()
-            value = draw_sine_wave(screen,offset,frequency,amplitude,overallY)
+            value = draw_sine_wave(screen,offset,frequency,16* counter_amp_output,overallY)
             print("value: ", value)
             target_y = ((value*2 - 350))
             target_x = 800 -(value -350) *4
 
             mouse_coords = [target_x,target_y]
+
+            pygame.draw.circle(screen,"red",mouse_coords,5)
 
             #for kelp_strand in kelp_forest:
             kelp_new_1.render_segments([mouse_coords[0]+0,mouse_coords[1]])
@@ -145,7 +150,7 @@ def main():
 
             
 
-            offset +=.002
+            offset +=.0005
             
             if keys[pygame.K_q]:
                 frequency+=.01
@@ -171,7 +176,16 @@ def main():
                 lobster_x -=1
             elif keys[pygame.K_RIGHT]:
                 lobster_x +=1
-            
+
+            counter_amp +=.01
+
+            if counter_amp >= 2*math.pi:
+                counter_amp = 0
+
+            print("freq: ", frequency, " amp: ", amplitude, "overally", overallY)
+
+            counter_amp_output = math.sin(counter_amp)
+            print("counter amp output ", counter_amp_output )
 
             #kelp_new_B.render_segments(mouse_coords)
             kelp_seg_test_pi = kelp_segment((math.pi),40,screen,pygame,None,[lobster_x,lobster_y],1,1)

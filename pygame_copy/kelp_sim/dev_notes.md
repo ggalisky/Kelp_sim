@@ -51,3 +51,35 @@ https://www.reddit.com/r/proceduralgeneration/comments/8yz4fv/my_first_successfu
 
 
 guess I need to learn about forward and inverse kinematics again (took a course on this during college for robot arm control)
+
+
+11/06/2023
+
+I've made some decent progress. 
+
+- got the water line implemented
+- sky paints above water line
+- kelp moves in relation to the waves (this needs work)
+
+what needs work:
+- kelp interaction with water line
+- algo for defining kelp movement relative to waves
+- kelp detail (leaves, water bladders)
+- need a sea floor
+- need final segments of kelp to be skinnier/ dynamically smaller
+- need better kelp graphics (outlines to determine one from other)
+- seafloor
+- lobster player character - see animation for wonky lizards
+- lighting - how??? Know zero about this, seems really really complicated
+
+if performance drops off, may need to migrate from pygame directly to SDL to cut out the middle layer of SW for better performance, but then its all C++ land
+
+
+What did I learn?
+instead of using neg X offset for the sinewave water line you can vary the amplitude of the wave between pos and neg with a bit of noise to get a more realistic looking water line - this must be how rain world does it
+
+
+cont later in the day
+
+I got rainworld looking water working (not 3D, just front wave) by varying the amplitude and keeping the offset but decreasing it
+
