@@ -47,8 +47,8 @@ def main():
     sound = pygame.mixer.Sound("Kelp Depths.wav")
 
     # start playing
-    #print("Playing Sound...")
-    #c hannel = sound.play()
+    print("Playing Sound...")
+    channel = sound.play()
   
 
     pygame.display.flip()
@@ -138,6 +138,8 @@ def main():
 
     wave_offset_loop_inc = .0005
 
+    amp_mult = 1
+
     show_targets = False
     try: #game loop
         while True:
@@ -157,12 +159,17 @@ def main():
                             
             clear_screen(screen)
 
-            value = draw_sine_wave(screen,offset,frequency,11* counter_amp_output,overallY)
-            wave_cords = value
+            wave_cords = draw_sine_wave(screen,offset,frequency,11* counter_amp_output,overallY)
      
             #kelp_new_test.render_segments_tracking_wave(wave_cords[kelp_new_test.anchor_coord[0]],counter_amp_output*11,wave_cords)
 
-            forest_A.render_kelp_forest(counter_amp_output*11,wave_cords,show_targets)
+            forest_A.render_kelp_forest(overallY,wave_cords,show_targets,counter_amp_output*11)
+
+            y_value = wave_cords[300]
+
+            #print("overall Y, ", overallY, " local y,", y_value, "delta: ", overallY-y_value)
+    
+            #print("freq: ", frequency, " amp: ", amplitude, "overally", overallY)
 
             offset += wave_offset_loop_inc
             
@@ -172,9 +179,9 @@ def main():
                 frequency-=.01
 
             if keys[pygame.K_w]:
-                amplitude+=.1
+                amp_mult+=.1
             elif keys[pygame.K_s]:
-                amplitude-=.1
+                amp_mult-=.1
 
             if keys[pygame.K_e]:
                 overallY+=1
@@ -206,9 +213,9 @@ def main():
             if counter_amp >= 2*math.pi:
                 counter_amp = 0
 
-            #print("freq: ", frequency, " amp: ", amplitude, "overally", overallY)
 
-            counter_amp_output = math.sin(counter_amp)
+
+            counter_amp_output = math.sin(counter_amp)*amp_mult
             #print("counter amp output ", counter_amp_output )
 
             pygame.draw.rect(screen,"grey",pygame.Rect(0, 700, 1700, 1000))

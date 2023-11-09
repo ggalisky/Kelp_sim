@@ -2,7 +2,7 @@ import math
 
 ### constants
 kelp_green = (167,230,70)
-kelp_green_2 = (190,200,154)
+kelp_green_2 = (190,200,124)
 
 
 ###
@@ -157,7 +157,12 @@ class kelp_segment:
         #shift X to the right
         target_x = target_x + -wave_amplitude * target_x_sway_coefficient
         
-        target_y = wave_curve_list[int(target_x)] #get new y
+        
+        try:
+            target_y = wave_curve_list[int(target_x)]
+        except:
+            #print("WARNING, targ")
+            target_y = wave_curve_list[len(wave_curve_list)-1]
 
         #shift start point if applicable
         if not self.anchor_segment:
@@ -233,6 +238,7 @@ class kelp:
         self.segments_lengths = self.generate_segments_lengths(self.length, self.num_segments)
         self.screen = screen
         self.pygame_obj = pygame_obj
+        self.leaf_stem_locations = []
 
         self.generate_segments()
 
@@ -288,10 +294,15 @@ class kelp_forest:
         for x in range (0,len(self.locations)):
             self.kelp_forest.append(kelp(self.segment_length,self.lengths[x],self.locations[x],self.screen,self.pg))
 
-    def render_kelp_forest(self,wave_amp,wave_list,show_targets):
+    def render_kelp_forest(self,overall_y,wave_list,show_targets, trad_amp = None):
         for x in self.kelp_forest:
             #print("HEY IM HERE: ",wave_list[x.anchor_coord[0]], "anchor coord: ", x.anchor_coord[0])
-            x.render_segments_tracking_wave(wave_list[x.anchor_coord[0]],wave_amp,wave_list,show_targets)
+            wave_y = wave_list[x.anchor_coord[0]]
+            wave_amp = -(overall_y - wave_y)
+            if trad_amp:
+                wave_amp = trad_amp
+            print("waveamp: ", wave_amp)
+            x.render_segments_tracking_wave(wave_y,wave_amp,wave_list,show_targets)
 
         
 
