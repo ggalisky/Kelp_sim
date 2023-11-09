@@ -151,7 +151,8 @@ class kelp_segment:
 
         target_x_sway_coefficient = 1 #sets how far left and right the kelp will sway proportional to the amplitude
 
-        target_x = wave_curve_list.index(wave_y_coord)
+        target_x = self.parent_anchor_coord[0]
+        #print("target X: ", target_x)
         
         #shift X to the right
         target_x = target_x + -wave_amplitude * target_x_sway_coefficient
@@ -177,9 +178,11 @@ class kelp_segment:
             
         # get new angle for up
         if self.target_group == "UP":
-            target_y -= final_target_y_offset
+            target_y =  target_y -final_target_y_offset
             dx = target_x - self.start_point[0]
             dy = target_y - self.start_point[1]
+
+            #print("UP, target x,y: ",target_x,",", target_y, " segment#: ", self.segment_number, " self.parent anchor: ", self.parent_anchor_coord)
             
         elif self.target_group == "SURFACE":
             #shift X target to the right proportionately to the distance between the curve and the segments start point. 
@@ -189,8 +192,13 @@ class kelp_segment:
 
             distance_to_curve = self.start_point[1] - wave_y_coord
 
-            target_x = self.start_point[0] + 1.5*self.length 
-            target_y = wave_curve_list[int(target_x)]
+            target_x = self.start_point[0] + 2*self.length 
+            
+            try:
+                target_y = wave_curve_list[int(target_x)]
+            except:
+                #print("WARNING, targ")
+                target_y = wave_curve_list[len(wave_curve_list)-1]
             target_y -= final_target_y_offset
 
             dx = target_x - self.start_point[0]
@@ -212,6 +220,7 @@ class kelp_segment:
 
         if show_targets:
             self.render_target_point((target_x,target_y))
+
    
 class kelp:
     
@@ -221,7 +230,6 @@ class kelp:
         self.anchor_coord = anchor_coord
         self.num_segments = num_segments
         self.segments = []
-        print("made it")
         self.segments_lengths = self.generate_segments_lengths(self.length, self.num_segments)
         self.screen = screen
         self.pygame_obj = pygame_obj
@@ -232,7 +240,6 @@ class kelp:
         segment_length_list =[]
 
         for x in range(num_segments):
-            print("length: " , length)
             segment_length_list.append(length)
         
 
@@ -242,9 +249,7 @@ class kelp:
 
         self.segments.append(kelp_segment((-math.pi*.5),
             self.segments_lengths[0],self.screen,self.pygame_obj,None,self.anchor_coord,1,.01))
-        print("len: ", len(self.segments_lengths))
         for x in range(0, int(len(self.segments_lengths))):
-            print("len of self.segments: ", str(len(self.segments)))
             self.segments.append(kelp_segment((-math.pi*.5),
             self.segments_lengths[x],self.screen,self.pygame_obj,self.segments[x],None,1,.012))
 
@@ -285,6 +290,7 @@ class kelp_forest:
 
     def render_kelp_forest(self,wave_amp,wave_list,show_targets):
         for x in self.kelp_forest:
+            #print("HEY IM HERE: ",wave_list[x.anchor_coord[0]], "anchor coord: ", x.anchor_coord[0])
             x.render_segments_tracking_wave(wave_list[x.anchor_coord[0]],wave_amp,wave_list,show_targets)
 
         

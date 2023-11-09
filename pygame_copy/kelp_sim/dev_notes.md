@@ -8,7 +8,7 @@ Kelp sim is a 2D simulation of a central California kelp forest with procedurall
 
 What features do I want to implement? 
 
-- Kelp segments are procdeurally animated are are affected by:
+- Kelp segments are procedurally animated are are affected by:
     - Cursor dragging
     - water level
     - water flow
@@ -82,4 +82,12 @@ instead of using neg X offset for the sinewave water line you can vary the ampli
 cont later in the day
 
 I got rainworld looking water working (not 3D, just front wave) by varying the amplitude and keeping the offset but decreasing it
+
+
+https://www.xconvert.com/downloads
+
+
+11/09/2023
+
+The project is beginning to grow on me. I've improved the kelp to have better wave tracking and surface interactions
 

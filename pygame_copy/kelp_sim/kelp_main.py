@@ -9,7 +9,7 @@ sky_blue = (204,255,255)
 monastery_blue = (0,177,190)
 white = (255,255,255)
 
-clock = pygame.time.Clock()
+#clock = pygame.time.Clock()
 
 def clear_screen(surface):
 
@@ -64,10 +64,31 @@ def main():
         (240,700),
         (270,700),
         (290,700),
-        (320,700)
+        (320,700),
+
+        (400,700),
+        (425,700),
+        (432,700),
+
+        (500,700),
+        (550,700),
+        (623,700),
+        (650,700),
+        (700,700),
+        (800,700),
+        (850,700),
+        (900,700),
+
+        (1000,700),
+        (1100,700),
+        (1200,700),
+        (1300,700),
+        (1400,700),
+    
     ]
 
     lengths = [
+
         160,
         144,
         190,
@@ -77,8 +98,30 @@ def main():
         167,
         180,
         120,
-        130
+        130,
+
+        140,
+        120,
+        90,
+        45,
+        200,
+        215,
+        145,
+        160,
+        20,
+        10,
+        176,
+
+
+        200,
+        200,
+        200,
+        200,
+        200,
+
     ]
+
+    print("len lenghts; ", len(lengths), "len locations, ", len(locations))
 
     forest_A = kelp_forest(locations,lengths,pygame,screen)
 
@@ -92,6 +135,8 @@ def main():
 
     counter_amp = 0
     counter_amp_output = 0
+
+    wave_offset_loop_inc = .0005
 
     show_targets = False
     try: #game loop
@@ -119,7 +164,7 @@ def main():
 
             forest_A.render_kelp_forest(counter_amp_output*11,wave_cords,show_targets)
 
-            offset +=.0005
+            offset += wave_offset_loop_inc
             
             if keys[pygame.K_q]:
                 frequency+=.01
@@ -132,9 +177,14 @@ def main():
                 amplitude-=.1
 
             if keys[pygame.K_e]:
-                overallY+=.1
+                overallY+=1
             elif keys[pygame.K_d]:
-                overallY-=.1
+                overallY-=1
+
+            if keys[pygame.K_z]:
+                wave_offset_loop_inc+=.0001
+            elif keys[pygame.K_x]:
+                wave_offset_loop_inc-=.0001
 
             if keys[pygame.K_UP]:
                 lobster_y -=1
@@ -174,7 +224,7 @@ def main():
                 
             pygame.display.flip()
 
-            clock.tick(120)
+            #clock.tick(120)
   
     finally:
         pygame.quit()
