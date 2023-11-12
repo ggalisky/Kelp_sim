@@ -1,4 +1,5 @@
 import math
+import pygame
 
 ### constants
 kelp_green = (167,230,70)
@@ -9,8 +10,8 @@ kelp_green_2 = (190,200,124)
 class kelp_segment:
 
     def __init__(self,start_angle,length, surface, pygameobj,parent=None,start_point=None,  angle_recovery_delay =1,joint_stiffness = 1,angle_overshoot = 0, child = None):
+        
         self.start_point = start_point
-       
         self.length = length
         self.angle = start_angle
         self.pg = pygameobj
@@ -24,6 +25,14 @@ class kelp_segment:
         self.parent_anchor_coord = None
         self.segment_number = 0
         self.child = child
+
+        self.leaf_stem_point = (0,0)
+        self.leaf_stem_length = 10
+        self.leaf_stem_angle = 0
+        self.leaf = None # can be None, left, or right
+        self.leaf_key_points = [(0,0)]
+
+        
         
         self.parent = parent
         if parent:
@@ -53,13 +62,12 @@ class kelp_segment:
         return [dx,dy]
 
     def draw_segment(self,color,thickness):
-        if self.parent:
-            pass
-            #print("self.angle = ", self.angle)
-
+        
         self.pg.draw.line(self.surface, color, self.start_point, self.end_point, thickness)
         self.pg.draw.circle(self.surface, color, self.start_point, thickness/2)
         self.pg.draw.circle(self.surface, color, self.end_point, thickness/2)
+
+        self.draw_leaf(color, thickness-1)
 
     def angle_from_dx_dy(self, dx,dy):
         return math.atan2(dy,dx)
@@ -211,6 +219,8 @@ class kelp_segment:
 
 
 
+
+
         new_angle = self.angle_from_dx_dy(dx,dy)
 
         self.goal_angle = new_angle #- self.angle_overshoot
@@ -226,10 +236,79 @@ class kelp_segment:
         if show_targets:
             self.render_target_point((target_x,target_y))
 
+        if self.leaf:
+                self.solve_leaf_position()
+
+    def solve_leaf_position(self):
+        # (x₁ + x₂)/2, (y₁ + y₂)/2.
+        
+        leaf_stem_min_angle = math.pi/8
+
+        if self.target_group == "SURFACE":
+            #allow for leaf_stem_angle to be changed when the kelp is on the surface
+            leaf_stem_min_angle = math.pi/20
+            pass
+
+        leaf_stem_length = self.leaf_stem_length
+
+        self.leaf_stem_point = ( (self.start_point[0] + self.end_point[0])/2 , (self.start_point[1] + self.end_point[1])/2 )
+        
+        target = (0,0)
+
+        target_reach = 40
+        
+        if self.leaf == "RIGHT":
+            self.leaf_stem_angle = self.angle + leaf_stem_min_angle
+            target = (self.leaf_stem_point[0]+ target_reach, self.leaf_stem_point[1] +target_reach)
+        
+        elif self.leaf == "LEFT":
+            self.leaf_stem_angle = self.angle - leaf_stem_min_angle
+            target = (self.leaf_stem_point[0] - target_reach, self.leaf_stem_point[1] + target_reach)
+
+        # need to get end point based on 
+
+        self.leaf_key_points[0] = ( leaf_stem_length * math.cos(self.leaf_stem_angle) + self.leaf_stem_point[0], leaf_stem_length * math.sin(self.leaf_stem_angle) + self.leaf_stem_point[1] )#x = r cosθ and y = r sinθ           
+        
+        if self.leaf == "RIGHT":
+            self.leaf_stem_angle = self.angle + leaf_stem_min_angle
+            target = (self.leaf_stem_point[0]+ target_reach, self.leaf_stem_point[1] +target_reach)
+        
+        elif self.leaf == "LEFT":
+            self.leaf_stem_angle = self.angle - leaf_stem_min_angle
+            target = (self.leaf_stem_point[0] - target_reach, self.leaf_stem_point[1] + target_reach)
+        
+        
+        '''
+        self.solve_ik(0, self.leaf_key_points[-1], target)
+
+        angle = 0
+        for i in range(1, len(self.leaf_key_points)):
+            angle += self.leaf_angles[i-1]
+            self.leaf_key_points[i] = self.leaf_key_points[i-1] + self.rel_points[i-1].rotate(angle)
+            '''
+        
+
+           
+        #print(self.leaf_key_points)
+    def draw_leaf(self, color, thickness):
+        
+        self.pg.draw.line(self.surface, color, self.leaf_stem_point, self.leaf_key_points[0], int(thickness))
+        #self.pg.draw.circle(self.surface, color, self.leaf_key_points[0], thickness+1)
+        self.pg.draw.circle(self.surface, color, self.leaf_key_points[0], thickness+.5)
+
+        #print("START")
+
+            
+
+
+
+
+
+
    
 class kelp:
     
-    def __init__(self,length,num_segments,anchor_coord, screen, pygame_obj):
+    def __init__(self,length,num_segments,anchor_coord, screen, pygame_obj, leaf_density=None):
 
         self.length = length
         self.anchor_coord = anchor_coord
@@ -238,9 +317,14 @@ class kelp:
         self.segments_lengths = self.generate_segments_lengths(self.length, self.num_segments)
         self.screen = screen
         self.pygame_obj = pygame_obj
-        self.leaf_stem_locations = []
+        self.leaf_density = leaf_density
 
         self.generate_segments()
+
+        if leaf_density:
+            self.assign_leaves()
+            
+            pass
 
     def generate_segments_lengths(self, length, num_segments):
         segment_length_list =[]
@@ -264,6 +348,29 @@ class kelp:
                 segment = self.segments[x]
                 segment.child = self.segments[x-1]
 
+    def assign_leaves(self):
+        step = 30
+        if self.leaf_density == 3:
+            step = 5
+        elif self.leaf_density == 2:
+            step = 20
+        elif self.leaf_density == 1:
+            step = 40
+        elif self.leaf_density == 4:
+            step = 2
+        
+        leaf_right = True
+
+        for x in range(0,len(self.segments),step):
+            segment = self.segments[x]
+            if leaf_right:
+                segment.leaf = "RIGHT"
+            else:
+                segment.leaf = "LEFT"
+            
+            leaf_right = not leaf_right
+
+
     def render_segments(self, mouse_coords):
         
         for segment in self.segments:
@@ -273,9 +380,8 @@ class kelp:
     def render_segments_tracking_wave(self, wave_y, wave_amp, wave_list,show_targets):
         
         for segment in self.segments:
-            segment.draw_segment(kelp_green_2, 5)
+            segment.draw_segment(kelp_green_2, 3)
             segment.follow_wave(wave_y,wave_amp,wave_list,show_targets)
-        
 
 class kelp_forest:
 
@@ -288,11 +394,9 @@ class kelp_forest:
         self.kelp_forest = []
         self.init_kelp_forest()
         
-        
-
     def init_kelp_forest(self):
         for x in range (0,len(self.locations)):
-            self.kelp_forest.append(kelp(self.segment_length,self.lengths[x],self.locations[x],self.screen,self.pg))
+            self.kelp_forest.append(kelp(self.segment_length,self.lengths[x],self.locations[x],self.screen,self.pg,3))
 
     def render_kelp_forest(self,overall_y,wave_list,show_targets, trad_amp = None):
         for x in self.kelp_forest:
@@ -301,8 +405,36 @@ class kelp_forest:
             wave_amp = -(overall_y - wave_y)
             if trad_amp:
                 wave_amp = trad_amp
-            print("waveamp: ", wave_amp)
             x.render_segments_tracking_wave(wave_y,wave_amp,wave_list,show_targets)
+
+
+
+def IK_solver(points,angles,target):
+
+    points_to_return = [0]
+    angles_to_return = [0]
+    angles_to_update = [0]
+
+    for x in range(0,(points-1)):
+        angles_to_update.insert(angles_to_update[0]+1)
+
+        #update angles
+
+        if points(len(points)-1) == target:
+            #perfect solve found
+            return (points_to_return, angles_to_return)
+            pass
+
+    #imperfect solve 
+    return (points_to_return, angles_to_return)
+    
+
+    #update first angle
+    #if endpoint = goal done
+    #update second angle, first angle
+    #if endpoint = goal done
+    #update thrid angle, second angle, first angle
+    #if endpoint = goal done
 
         
 

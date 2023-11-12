@@ -48,7 +48,7 @@ def main():
 
     # start playing
     print("Playing Sound...")
-    channel = sound.play()
+    #channel = sound.play()
   
 
     pygame.display.flip()
