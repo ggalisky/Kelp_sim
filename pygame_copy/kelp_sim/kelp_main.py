@@ -5,6 +5,8 @@ from segment import kelp
 from segment import kelp_segment
 from segment import kelp_forest
 
+from segment import segment_chain
+
 sky_blue = (204,255,255)
 monastery_blue = (0,177,190)
 white = (255,255,255)
@@ -125,6 +127,12 @@ def main():
 
     forest_A = kelp_forest(locations,lengths,pygame,screen)
 
+   
+
+    test_leaf = segment_chain(15,15,(500,700),screen,pygame) 
+
+    test_leaf.render_segments_IK((500,500))
+
     offset = 0
     frequency = 2
     amplitude = 20
@@ -156,22 +164,26 @@ def main():
                                 pygame.quit()
                                 quit()
                         #if keys[pygame.K_p]:
+
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            mouse_coords = (mouse_x,mouse_y)
                             
             clear_screen(screen)
 
+            offset += wave_offset_loop_inc # makes waves look like they flow to the right
+
             wave_cords = draw_sine_wave(screen,offset,frequency,11* counter_amp_output,overallY)
      
-            #kelp_new_test.render_segments_tracking_wave(wave_cords[kelp_new_test.anchor_coord[0]],counter_amp_output*11,wave_cords)
+            #forest_A.render_kelp_forest(overallY,wave_cords,show_targets,counter_amp_output*11)
 
-            forest_A.render_kelp_forest(overallY,wave_cords,show_targets,counter_amp_output*11)
+            test_leaf.render_segments_IK(mouse_coords)
 
-            y_value = wave_cords[300]
+           
 
-            #print("overall Y, ", overallY, " local y,", y_value, "delta: ", overallY-y_value)
-    
-            #print("freq: ", frequency, " amp: ", amplitude, "overally", overallY)
+            
 
-            offset += wave_offset_loop_inc
+
+           
             
             if keys[pygame.K_q]:
                 frequency+=.01

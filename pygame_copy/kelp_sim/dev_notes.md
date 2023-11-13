@@ -89,5 +89,28 @@ https://www.xconvert.com/downloads
 
 11/09/2023
 
-The project is beginning to grow on me. I've improved the kelp to have better wave tracking and surface interactions
+The project is beginning to grow on me. I've improved the kelp to have better wave tracking and surface interactions.
+
+11/9/2023
+
+Going to start working on adding air bladders and leaves.
+
+Starting to think about two concepts:
+
+1. habitation zones:
+
+In nature, fish tend to chill out under kelp canopy. if I get a lighting system that creates light gradients based on water depth penetration, then I can use the light gradient from the darkest area (under kelp leaves) to the lighter areas to create an area where fish want to hang out. 
+
+2. fish AI/ swarming
+
+If I want fish to aggrgate under kelp without overlapping they need to know to stay a little bit away from fellow fish. I am also curious about implementing swarming behaviors when a predator is near by
+
+
+https://www.youtube.com/watch?v=KPoeNZZ6H4s
+
+11/12/2023
+
+need to make kelp that is tracking wave curve snap to wave curve and then add noise to wave curve based on creature collision 
+
+
 
